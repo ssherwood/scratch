@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:annotation-config />
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+		<property name="properties">
+			<props>
+				<prop key="jpa.hibernate.databasePlatform">org.hibernate.dialect.DerbyTenSevenDialect</prop>
+				<prop key="jpa.hibernate.showSql">true</prop>
+				<prop key="jpa.hibernate.generateDdl">true</prop>
+				<prop key="hibernate.id.new_generator_mappings">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- DataSource -->
+	
+	<bean id="dataSourceXA-Derby" class="org.apache.commons.dbcp.managed.BasicManagedDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver.className:org.apache.derby.jdbc.EmbeddedDriver}" />
+		<property name="url" value="${jdbc.url:jdbc:derby:memory:InMemoryDatabase;create=true}" />
+		<property name="transactionManager" value="#{jotm.transactionManager}"/>
+	</bean>
+
+	<!-- JPA configuration -->
+
+	<!-- 
+	<context:load-time-weaver />
+	<bean id="loadTimeWeaver" class="org.springframework.instrument.classloading.oc4j.OC4JLoadTimeWeaver"/>
+	-->
+	
+	<bean id="loadTimeWeaver" class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="loadTimeWeaver" ref="loadTimeWeaver" />
+		<property name="dataSource" ref="dataSourceXA-Derby" />
+		<property name="persistenceUnitName" value="demoWithJTA" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="databasePlatform" value="${jpa.hibernate.databasePlatform}" />
+				<property name="showSql" value="${jpa.hibernate.showSql}" />
+				<property name="generateDdl" value="${jpa.hibernate.generateDdl}" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+   			<props>
+    			<prop key="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JOTMTransactionManagerLookup</prop>
+                <prop key="hibernate.current_session_context_class">jta</prop>
+                <prop key="hibernate.max_fetch_depth">2</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+                <!-- TODO figure out what this does <prop key="hibernate.connection.release_mode">after_statement</prop> -->
+   			</props>
+   		</property>
+	</bean>
+	
+	<!-- JTA configuration -->
+	
+	<!-- ================================================================== -->
+	<!-- This will scan for the @Transactional annotation in your project   -->
+	<!-- and create dynamic AOP proxies around each method with the         -->
+	<!-- configured transaction manager (default = transactionManager).     -->
+	<!--                                                                    -->
+	<!-- NOTE: Spring recommends that you only apply @Transactional to      -->
+	<!-- public methods of concrete classes.                                -->
+	<!-- ================================================================== -->
+	<tx:annotation-driven />
+
+	<!-- this would work in a full JEE container...
+	<tx:jta-transaction-manager />
+	-->
+	
+	<bean id="jotm" class="org.objectweb.jotm.Jotm" destroy-method="stop">
+		<!-- local - true to create an instance of JOTM with a local transaction factory, false else -->
+		<constructor-arg value="true" />
+		<!-- bound - true if the transaction factory is to be bound in a registry, false else (ignored if local is false) -->
+		<constructor-arg value="false" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+		<property name="transactionManager" value="#{jotm.transactionManager}" />
+    	<property name="userTransaction" value="#{jotm.userTransaction}" />
+	</bean>
+	
+	<!-- Repositories -->
+	<jpa:repositories base-package="org.demos.jpa2.example.repos" />
+	
+	<!-- having to do this twice seems like a bug of some sort -->
+	
+	<jpa:repositories base-package="org.demos.jpa2.example.repos">
+		<jpa:repository id="artistRepository" custom-impl-ref="artistRepositoryCustomImpl"/>
+	</jpa:repositories>
+	
+	<bean id="artistRepositoryCustomImpl" class="org.demos.jpa2.example.repos.ArtistRepositoryCustomImpl" />
+		
+</beans>
