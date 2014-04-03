@@ -27,10 +27,10 @@ verify
 30. Install Ruby (via rvm)
 http://rvm.io/rvm/install
 user$ \curl -sSL https://get.rvm.io | bash -s stable
+rvm install 2.1
 
-** this isn't working as well as expected, is zsh to blame?
-found an answer http://stackoverflow.com/questions/9336596/rvm-installation-not-working-rvm-is-not-a-function
-
+** this wasn't working as well as expected, is zsh to blame?
+** found an answer http://stackoverflow.com/questions/9336596/rvm-installation-not-working-rvm-is-not-a-function
 
 40. Install ant
 sudo apt-get install ant
