@@ -1,6 +1,12 @@
 Setup Instructions for Ubuntu 12
 ================================
 
+0. Patch and install guest additions
+
+0a. Set Privacy Permissions (i.e. don't search internet)
+
+0b. usermod -aG vboxsf <youruser>  # this will let you access the shared folder between ubuntu and the host os
+
 1. Install needed packages
 sudo apt-get install curl git zsh
 
