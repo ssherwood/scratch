@@ -7,6 +7,11 @@ Setup Instructions for Ubuntu 12
 
 0b. usermod -aG vboxsf <youruser>  # this will let you access the shared folder between ubuntu and the host os
 
+
+0c. install puppet
+sudo apt-get install puppet
+
+
 1. Install needed packages
 sudo apt-get install curl git zsh
 
