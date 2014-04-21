@@ -5,24 +5,22 @@ Setup Instructions for Ubuntu 12
 
 0a. Set Privacy Permissions (i.e. don't search internet)
 
-0b. usermod -aG vboxsf <youruser>  # this will let you access the shared folder between ubuntu and the host os
-
+0b. Setup access for shared folder between guest OS and host OS
+sudo usermod -aG vboxsf <youruser>
 
 0c. install puppet
 sudo apt-get install puppet
 
-
 1. Install needed packages
 sudo apt-get install curl git zsh
 
-(Log out/in to setup zsh defaults?)
-
-15.  Install oh-my-zsh
+15.  Install oh-my-zsh  (wait on this)
 https://github.com/robbyrussell/oh-my-zsh#via-wget
 curl -L http://install.ohmyz.sh | sh
 
 ** potentiall having issues with this step due to lack of sudo / PAM access
 ** switch to "manual" instll steps
+
 
 20. Install Oracle's Java 7
 http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
