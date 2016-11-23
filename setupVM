@@ -1,0 +1,132 @@
+# Vagrant setup
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install dkms
+
+<reboot>
+
+# Install Virtalbox additions
+sudo sh ./VBoxLinuxAdditions.run
+
+# Setup ssh
+sudo apt-get install openssh-server
+sudo sudo systemctl restart ssh
+
+# Setup additional tools
+sudo apt-get install vim curl git zsh jq emacs ruby-full python-pip chromium-browser libxml2-utils 
+
+# Get oh-my-zsh
+sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+<reboot>
+
+# Install Java
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+sudo apt-get install oracle-java8-set-default
+
+# Install SDKMan
+curl -s "https://get.sdkman.io" | bash
+sdk
+sdk i ant
+sdk i maven
+sdk i gradle
+sdk i sbt
+sdk i scala
+sdk i kotlin
+sdk i groovy
+sdk i springboot
+
+spring install org.springframework.cloud:spring-cloud-cli:1.2.1.RELEASE
+
+# Setup maven settings
+
+# Setup gradle settings
+
+# Setup sbt
+<not able to get working behind the proxy>
+
+# Install STS
+<download current version>
+tar xvzf ~/Downloads/spring-tool-suite*tar.gz -C /tmp/
+sudo mv ~/Downloads/sts-bundle /opt/
+sudo su -c "ln -s /opt/sts-bundle/sts-3.8.2.RELEASE/STS /usr/local/bin/sts"
+
+# Add desktop icon support
+cp <sts.desktop> /usr/share/applications
+
+# Install IntelliJ CE
+<download current version>
+tar zxvf ideaIC-2016.2.5.tar.gz
+sudo mv idea-IC-162.2228.15 /opt
+
+# Install NodeJS
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Setup npm proxy
+npm config set proxy http://10.0.2.2:3128/
+npm config set https-proxy http://10.0.2.2:3128/
+<set artifactory registry>
+
+# Install CF CLI
+download .deb and use installer
+
+# Install golang
+sudo add-apt-repository ppa:ubuntu-lxc/lxd-stable
+sudo apt-get update
+sudo apt-get install golang
+
+# Install filezilla
+sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu xenial-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
+wget -q -O - http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+sudo apt-get install filezilla
+
+# Install docker
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+sudo apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+sudo apt-get update
+sudo apt-get install -y docker-engine
+
+# setup docker for no sudo
+sudo usermod -aG docker $(whoami)
+<reboot>
+
+# configure docker for proxy (http://stackoverflow.com/questions/23111631/cannot-download-docker-images-behind-a-proxy)
+sudo mkdir /etc/systemd/system/docker.service.d
+sudo vi http-proxy.conf <<
+[Service]
+Environment="HTTP_PROXY=http://10.0.2.2:3128/"
+Environment="NO_PROXY=localhost,127.0.0.0/8,.kroger.com"
+>>
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+# Install JMeter
+<download>
+tar zxvf apache-jmeter-3.0.tgz apache-jmeter-3.0
+sudo mv apache-jmeter-3.0 /opt
+sudo chown -R root:root apache-jmeter-3.0
+cp <jmeter.desktop> /usr/share/applications
+
+# Install SublimeText3
+sudo add-apt-repository ppa:webupd8team/sublime-text-3
+sudo apt-get update
+sudo apt-get install sublime-text-installer
+# setup package control proxy
+install emmet
+install sidebarenhancements
+
+# Install atom
+sudo add-apt-repository ppa:webupd8team/atom
+sudo apt-get update
+sudo apt-get install atom
+
+# Install P4merge
+dowload
+unzip
+mv to opt
+sudo ln -s /opt/p4merge/bin/p4merge /usr/local/bin/p4merge
+sudo ln -s /opt/p4v/lib/p4v /usr/local/lib/p4v
