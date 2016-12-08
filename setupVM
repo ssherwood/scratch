@@ -9,14 +9,17 @@ sudo apt-get install dkms
 # Install Virtalbox additions
 sudo sh ./VBoxLinuxAdditions.run
 
+# Remove stuff
+sudo apt-get remove transmission-gtk
+
 # Setup ssh
 sudo apt-get install openssh-server
 sudo sudo systemctl restart ssh
 
-# Setup additional tools
-sudo apt-get install vim curl git zsh jq emacs ruby-full python-pip chromium-browser libxml2-utils 
+# Setup most cmd tools
+sudo apt-get install vim curl git zsh jq ngrep emacs ruby-full python-pip chromium-browser libxml2-utils httpie
+pip install --upgrade httpie
 
-# Get oh-my-zsh
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 <reboot>
@@ -48,6 +51,10 @@ spring install org.springframework.cloud:spring-cloud-cli:1.2.1.RELEASE
 # Setup sbt
 <not able to get working behind the proxy>
 
+
+# Install Synapse
+sudo apt-get install synapse
+
 # Install STS
 <download current version>
 tar xvzf ~/Downloads/spring-tool-suite*tar.gz -C /tmp/
@@ -61,6 +68,7 @@ cp <sts.desktop> /usr/share/applications
 <download current version>
 tar zxvf ideaIC-2016.2.5.tar.gz
 sudo mv idea-IC-162.2228.15 /opt
+
 
 # Install NodeJS
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
@@ -130,3 +138,34 @@ unzip
 mv to opt
 sudo ln -s /opt/p4merge/bin/p4merge /usr/local/bin/p4merge
 sudo ln -s /opt/p4v/lib/p4v /usr/local/lib/p4v
+
+# Install Wireshark
+sudo add-apt-repository ppa:wireshark-dev/stable
+sudo apt-get update
+sudo apt-get install wireshark
+
+# Install SoapUI
+<download: https://www.soapui.org/downloads/soapui/source-forge.html>
+unzip mv to opt
+sudo ln -s /opt/soapui/bin/soapui.sh /usr/bin/soapui
+<setup soapui.desktop>
+
+
+
+####
+cleanup
+
+
+rm .viminfo
+rm .zsh_history
+rm .bash_history
+rm .wget-hsts
+rm -rf .codeintel
+
+cleanup firefox/chrome history
+
+
+
+### Other stuff...
+
+Setup shared folder between host and guest to share code  ~/Repos
