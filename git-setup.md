@@ -19,3 +19,6 @@ git fetch upstream
 3. Update your fork to keep up with their changes:
 
 `git pull upstream master`
+
+* https://help.github.com/articles/configuring-a-remote-for-a-fork/
+* https://help.github.com/articles/syncing-a-fork/
