@@ -38,29 +38,34 @@ Storage
 ## Configure the Network Proxy
 
 ### Click on System Settings and select "Network"
-** Add to "Network proxy":
-*** Manual -> 10.0.2.2:3128 (all) and click "Apply system wide"
+
+- Add to "Network proxy":
+  - Manual -> 10.0.2.2:3128 (all) and click "Apply system wide"
 
 ### Update/add to `/etc/environment`:
 
+```
 http_proxy="http://10.0.2.2:3128/"
 https_proxy="https://10.0.2.2:3128/"
 ftp_proxy="ftp://10.0.2.2:3128/"
 socks_proxy="socks://10.0.2.2:3128/"
+```
 
 ### $ `sudo vi /etc/apt.conf`
 
+```
 Acquire::http::proxy "http://10.0.2.2:3128/";
 Acquire::https::proxy "https://10.0.2.2:3128/";
 Acquire::ftp::proxy "ftp://10.0.2.2:3128/";
 Acquire::socks::proxy "socks://10.0.2.2:3128/";
+```
 
 ## Restart VM
 
 ## Update OS
 
-`sudo apt-get update`
-`sudo apt-get upgrade`
+- `sudo apt-get update`
+- `sudo apt-get upgrade`
 
 *** Had to use the UI software updater after this for some reason...
 
@@ -70,10 +75,10 @@ Acquire::socks::proxy "socks://10.0.2.2:3128/";
 
 Security & Privacy
 - Files & Applications
--- Turn off "Record file and application usage"
--- Clear Usage Data (from all time)
+  - Turn off "Record file and application usage"
+  - Clear Usage Data (from all time)
 - Diagnostics
--- Turn off "Send error" and "Send occasional system info"
+  - Turn off "Send error" and "Send occasional system info"
 
 - Disable Firefox ubuntu extension
 
@@ -85,7 +90,7 @@ Security & Privacy
 
 ## Install software
 
-sudo apt-get install git tmux zsh vim emacs curl jq httpie chromium-browser
+`$ sudo apt-get install git tmux zsh vim emacs curl jq httpie chromium-browser lynx`
 
 ## Install oh-my-zsh
 
@@ -93,44 +98,55 @@ https://github.com/robbyrussell/oh-my-zsh
 
 ## Install Java8
 
+```
 . ./set-proxy.sh
 sudo -E add-apt-repository ppa:webupd8team/java
 sudo apt-get update
 sudo apt-get install oracle-java8-installer
 sudo apt-get install oracle-java8-set-default
+```
 
 ## Install SDKMan
 
+```
 curl -s "https://get.sdkman.io" | bash
 source "/home/vagrant/.sdkman/bin/sdkman-init.sh"
+```
 
+```
 sdk i ant
 sdk i maven
 sdk i gradle
 sdk i kotlin
 sdk i groovy
 sdk i springboot
+```
 
+```
 . ./set-proxy.sh
 spring install org.springframework.cloud:spring-cloud-cli:1.3.1.RELEASE
+```
 
 ## Configure Maven & Gradle proxy config
 
 ## Install NodeJS LTS
 
+```
 $ sudo apt-get install python-software-properties
 $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+```
 
 ## Install VSCode
 
 https://code.visualstudio.com/docs/setup/linux
 
+```
 $ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
 $ sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
 $ sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-
 $ sudo apt-get update
 $ sudo apt-get install code # or code-insiders
+```
 
 ## Install Docker
 
@@ -143,11 +159,14 @@ https://stackoverflow.com/questions/23111631/cannot-download-docker-images-behin
 
 Download STS bundle from https://spring.io/tools/sts/all
 
+```
 $ tar zxvf spring-tool-suite-3.9.0.RELEASE-e4.7.0-linux-gtk-x86_64.tar.gz -C /tmp
 $ sudo mv /tmp/sts-bundle /opt
 $ sudo su -c "ln -s /opt/sts-bundle/sts-3.6.4.RELEASE/STS /usr/local/bin/STS"
 $ sudo vi /usr/share/applications/STS.desktop
+```
 
+```
 [Desktop Entry]
 Name=SpringSource Tool Suite
 Comment=SpringSource Tool Suite
@@ -157,6 +176,7 @@ StartupNotify=true
 Terminal=false
 Type=Application
 Categories=Development;IDE;Java;
+```
 
 ### Set proxy config to manual (don't add SOCKS support)
 
