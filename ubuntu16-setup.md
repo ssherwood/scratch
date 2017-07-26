@@ -90,7 +90,7 @@ Security & Privacy
 
 ## Install software
 
-`$ sudo apt-get install git tmux zsh vim emacs curl jq httpie chromium-browser lynx`
+`$ sudo apt-get install git tmux zsh vim emacs curl jq httpie chromium-browser lynx shellcheck`
 
 ## Install oh-my-zsh
 
