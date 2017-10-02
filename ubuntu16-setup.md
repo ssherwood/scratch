@@ -134,6 +134,7 @@ spring install org.springframework.cloud:spring-cloud-cli:1.3.1.RELEASE
 ```
 $ sudo apt-get install python-software-properties
 $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+$ sudo apt-get install nodejs
 ```
 
 ## Install VSCode
