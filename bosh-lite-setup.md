@@ -13,8 +13,6 @@ Installing BOSH-lite
 
 * Clone bosh-deployment github repo
 
-NOTES: Seem to have issues with zsh -> Use bash instead
-
 ```
 % git clone https://github.com/cloudfoundry/bosh-deployment
 % cd bosh-deployment
