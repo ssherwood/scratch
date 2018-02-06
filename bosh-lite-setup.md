@@ -59,47 +59,62 @@ ssh -i ~/.ssh/bosh-virtualbox.key jumpbox@192.168.50.6
 Install Cloud Foundry
 =====================
 
+```
 % git clone https://github.com/cloudfoundry/cf-deployment 
 % cd cf-deployment
+```
 
+Upload the required stemcell
+
+```
 % bosh -e vbox upload-stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
+```
 
+Update the cloud config
+
+```
 % bosh -e vbox update-cloud-config iaas-support/bosh-lite/cloud-config.yml  
+```
 
+Run the BOSH deployment
+
+```
 % bosh -e vbox -d cf deploy cf-deployment.yml \
 -o operations/bosh-lite.yml \
 --vars-store deployment-vars.yml \
 -v system_domain=bosh-lite.com
-
+```
 
 >> This might take a while...
 
-
+```
 % sudo route add -net 10.244.0.0/16 gw 192.168.50.6 # Linux 
 % export CF_ADMIN_PASSWORD=$(bosh int ./deployment-vars.yml --path /cf_admin_password)
 % cf auth admin $CF_ADMIN_PASSWORD
-
-
-
+```
 
 Log in
-
+------
+```
 % cf api https://api.bosh-lite.com --skip-ssl-validation
+```
 
+Setup Org and Space
+-----------------------
+```
 % cf create-org cloudfoundry
 % cf target -o cloudfoundry
-
 % cf create-space development
 % cf target -o cloudfoundry -s development
-
-
+```
 
 Push App
 --------
+```
 % cf push hop-demo -p target/hop-demo-0.0.1-SNAPSHOT.jar -b java_buildpack -m 1G
+```
 
-Now visit:  http://hop-demo.bosh-lite.com/health
-
+Now visit the deployed apps health endpoint:  http://hop-demo.bosh-lite.com/health
 
 Show Logs
 ---------
@@ -107,12 +122,11 @@ Show Logs
 % cf logs hop-demo --recent
 ```
 
--or to "tail"
+Or to just "tail" the logs
+
 ```
 % cf logs hop-demo
 ```
-
-
 
 
 Sources:
@@ -121,4 +135,3 @@ Sources:
 * http://www.starkandwayne.com/blog/bosh-lite-on-virtualbox-with-bosh2/
 * http://www.starkandwayne.com/blog/running-cloud-foundry-locally-on-bosh-lite-with-bosh2/
 * https://banck.net/2017/03/deploying-cloud-foundry-virtualbox-using-bosh-cli-v2/
-
