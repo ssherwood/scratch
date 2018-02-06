@@ -1,3 +1,5 @@
+
+
 Pre-requisites
 ==============
 - Install VirtualBox: https://www.virtualbox.org/wiki/Downloads
@@ -91,9 +93,32 @@ Log in
 % cf target -o cloudfoundry -s development
 
 
+
+Push App
+--------
+% cf push hop-demo -p target/hop-demo-0.0.1-SNAPSHOT.jar -b java_buildpack -m 1G
+
+Now visit:  http://hop-demo.bosh-lite.com/health
+
+
+Show Logs
+---------
+```
+% cf logs hop-demo --recent
+```
+
+-or to "tail"
+```
+% cf logs hop-demo
+```
+
+
+
+
 Sources:
 
 * https://bosh.io/docs/cli-v2.html#install
 * http://www.starkandwayne.com/blog/bosh-lite-on-virtualbox-with-bosh2/
 * http://www.starkandwayne.com/blog/running-cloud-foundry-locally-on-bosh-lite-with-bosh2/
 * https://banck.net/2017/03/deploying-cloud-foundry-virtualbox-using-bosh-cli-v2/
+
